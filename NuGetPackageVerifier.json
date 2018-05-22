@@ -1,10 +1,4 @@
 {
-    "adx-nonshipping": {
-        "rules": [],
-        "packages": {
-          
-        }
-    },
     "Default": {
         "rules": [
             "DefaultCompositeRule"
