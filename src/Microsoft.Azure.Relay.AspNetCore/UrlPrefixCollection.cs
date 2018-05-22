@@ -135,6 +135,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             return GetEnumerator();
         }
 
+        // TODO: CR: This appears unused (does ASP.NET call via reflection or can it be removed?)
         internal void RegisterAllPrefixes(UrlGroup urlGroup)
         {
             lock (_prefixes)

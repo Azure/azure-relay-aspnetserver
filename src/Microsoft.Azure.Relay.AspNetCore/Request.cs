@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Relay;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
     class Request
     {
-        private RelayedHttpListenerRequest _innerRequest;
+        private readonly RelayedHttpListenerRequest _innerRequest;
         private readonly Uri _baseUri;
         private readonly Uri _requestUri;
-        HeaderCollection _headers;
+        readonly HeaderCollection _headers;
 
         public Request(RelayedHttpListenerRequest innerRequest, Uri baseUri)
         {
@@ -38,8 +34,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public string Method => _innerRequest.HttpMethod;
         public HeaderCollection Headers => _headers;
         public bool HasEntityBody => _innerRequest.HasEntityBody;
-
         public string Scheme => "https";
+
         public string Path
         {
             get
@@ -64,8 +60,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 return path;
             }
         }
-        public string QueryString => Url.Query;
 
+        public string QueryString => Url.Query;
         public Version ProtocolVersion { get; internal set; }
         public IPAddress RemoteIpAddress { get; internal set; }
         public int RemotePort { get; internal set; }

@@ -48,6 +48,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         {
             return _innerStream.EndRead(asyncResult);
         }
+
         public override void Flush()
         {
             _onStart().GetAwaiter().GetResult();

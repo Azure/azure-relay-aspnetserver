@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Features.Authentication;
-using Microsoft.Azure.Relay;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
@@ -31,6 +30,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
         static StandardFeatureCollection()
         {
+            // TODO: CR: Isn't this added above?
             _featureFuncLookup[typeof(IHttpUpgradeFeature)] = _identityFunc;
         }
 

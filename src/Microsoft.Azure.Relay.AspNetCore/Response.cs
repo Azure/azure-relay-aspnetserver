@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Relay;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
     class Response
     {
-        private RelayedHttpListenerResponse _innerResponse;
+        private readonly RelayedHttpListenerResponse _innerResponse;
         private HeaderCollection _headers;
 
         public Response(RelayedHttpListenerResponse innerResponse, Uri baseUri)
