@@ -272,7 +272,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             {
                 var response = await SendSocketRequestAsync(root, "/%252F");
                 var responseStatusCode = response.Substring(9); // Skip "HTTP/1.1 "
-                Assert.Equal("200", responseStatusCode);
+                Assert.StartsWith("200", responseStatusCode);
             }
         }
 
@@ -291,7 +291,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 // GET http://localhost:5001 HTTP/1.1
                 var response = await SendSocketRequestAsync(root, root);
                 var responseStatusCode = response.Substring(9); // Skip "HTTP/1.1 "
-                Assert.Equal(StatusCodes.Status200OK.ToString(), responseStatusCode);
+                Assert.StartsWith("200", responseStatusCode);
             }
         }
 
@@ -394,7 +394,9 @@ namespace Microsoft.Azure.Relay.AspNetCore
             builder.AppendLine(uri.Authority);
             builder.AppendLine();
 
-            byte[] request = Encoding.ASCII.GetBytes(builder.ToString());
+            byte[] request = Encoding.UTF8.GetBytes(builder.ToString());
+
+            //Console.WriteLine("req: {0} {1}", address, builder.ToString());
 
             using (var socket = new Socket(SocketType.Stream, ProtocolType.Tcp))
             {
@@ -403,9 +405,17 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     ssl.AuthenticateAsClient(uri.Authority);
                     ssl.Write(request);
-                    var response = new byte[12];
-                    await Task.Run(() => ssl.Read(response, 0, response.Length));
-                    return Encoding.ASCII.GetString(response);
+                    var response = new byte[256];
+                    int totalRead = 0;
+                    while (true) {
+                        int bytesRead = await ssl.ReadAsync(response, totalRead, response.Length-totalRead);
+                        totalRead += bytesRead;
+                        if ( bytesRead == 0 )
+                           break;
+                    }
+                    
+                    //Console.WriteLine("res: {0}", Encoding.UTF8.GetString(response, 0, totalRead));
+                    return Encoding.UTF8.GetString(response, 0, totalRead);
                 }                
             }
         }

@@ -105,22 +105,33 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
         internal static TokenProvider CreateTokenProvider()
         {
-            var rule = Environment.GetEnvironmentVariable("RELAY_TEST_SASRULE_NAME");
-            var key = Environment.GetEnvironmentVariable("RELAY_TEST_SASRULE_KEY");
-
-            Assert.NotNull(rule);
-            Assert.NotNull(key);
-            Assert.False(string.IsNullOrEmpty(rule));
-            Assert.False(string.IsNullOrEmpty(key));
-            return TokenProvider.CreateSharedAccessSignatureTokenProvider(rule, key);
+            var connectionString = Environment.GetEnvironmentVariable("RELAY_TEST_CONNECTIONSTRING_NOAUTH");
+            
+            Assert.NotNull(connectionString);
+            Assert.False(string.IsNullOrEmpty(connectionString));
+            var cb = new RelayConnectionStringBuilder(connectionString);
+            if (!string.IsNullOrEmpty(cb.SharedAccessSignature))
+            {
+                return TokenProvider.CreateSharedAccessSignatureTokenProvider(cb.SharedAccessSignature);
+            }
+            else
+            {
+                return TokenProvider.CreateSharedAccessSignatureTokenProvider(cb.SharedAccessKeyName, cb.SharedAccessKey);
+            }
         }
 
         internal static string GetRelayUrl()
         {
-            var url = Environment.GetEnvironmentVariable("RELAY_TEST_ENDPOINT");
-            Assert.NotNull(url);
-            Assert.False(string.IsNullOrEmpty(url));
-            return url;
+            var connectionString = Environment.GetEnvironmentVariable("RELAY_TEST_CONNECTIONSTRING_NOAUTH");
+
+            Assert.NotNull(connectionString);
+            Assert.False(string.IsNullOrEmpty(connectionString));
+            var cb = new RelayConnectionStringBuilder(connectionString);
+
+            Assert.NotNull(connectionString);
+            Assert.False(string.IsNullOrEmpty(connectionString));
+
+            return new Uri(new UriBuilder(cb.Endpoint){Scheme=Uri.UriSchemeHttps}.Uri, cb.EntityPath.EndsWith("/")?cb.EntityPath:cb.EntityPath+"/").AbsoluteUri;
         }
     }
 }

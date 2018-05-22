@@ -9,9 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-  <PackageReference Include="System.Net.Http.WinHttpHandler" Version="$(SystemNetHttpWinHttpHandlerPackageVersion)" />
-    <PackageReference Include="Microsoft.Azure.Relay" Version="1.1.0-preview" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" Version="$(SystemNetHttpWinHttpHandlerPackageVersion)" />
+    <PackageReference Include="Microsoft.Azure.Relay" Version="$(MicrosoftAzureRelayPackageVersion)" />
+    <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonPackageVersion)" />
   </ItemGroup>
 
 </Project>
