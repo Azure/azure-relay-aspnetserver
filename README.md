@@ -1,4 +1,4 @@
-AzureRelayServer
+ASP.NET Core Hosting for Azure Relay
 =================
 
 [![Build Status](https://travis-ci.org/clemensv/azure-relay-aspnetserver.svg?branch=relay)](https://travis-ci.org/clemensv/azure-relay-aspnetserver)
