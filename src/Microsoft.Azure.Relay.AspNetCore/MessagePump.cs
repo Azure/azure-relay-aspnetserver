@@ -3,6 +3,7 @@
 
 using System;
 using System.Diagnostics.Contracts;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -11,8 +12,6 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Azure.Relay;
-using System.Net;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
@@ -42,6 +41,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             {
                 throw new ArgumentNullException(nameof(loggerFactory));
             }
+
             _options = options.Value;
             Listener = new AzureRelayListener(_options, loggerFactory, ProcessRequest);
             _logger = LogHelper.CreateLogger(loggerFactory, typeof(MessagePump));
@@ -51,7 +51,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
             Features.Set<IServerAddressesFeature>(_serverAddresses);
 
             _processRequest = new Action<object>(ProcessRequestAsync);
-     
         }
 
         internal AzureRelayListener Listener { get; }
@@ -137,15 +136,15 @@ namespace Microsoft.Azure.Relay.AspNetCore
             {
                 // Request processing failed to be queued in threadpool
                 // Log the error message, release throttle and move on
-                LogHelper.LogException(_logger, "ProcessRequestAsync", ex);
+                LogHelper.LogException(_logger, nameof(ProcessRequest), ex);
             }
         }
 
         private async void ProcessRequestAsync(object requestContextObj)
         {
-            var requestContext = requestContextObj as RequestContext;
             try
             {
+                var requestContext = (RequestContext)requestContextObj;
                 if (Stopping)
                 {
                     SetFatalResponse(requestContext, (HttpStatusCode)503);
@@ -172,12 +171,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 }
                 catch (Exception ex)
                 {
-                    LogHelper.LogException(_logger, "ProcessRequestAsync", ex);
+                    LogHelper.LogException(_logger, nameof(ProcessRequestAsync), ex);
                     _application.DisposeContext(context, ex);
                         // We haven't sent a response yet, try to send a 500 Internal Server Error
                         requestContext.Response.Headers.Clear();
                         SetFatalResponse(requestContext, (HttpStatusCode)500);
-                    
                 }
                 finally
                 {
@@ -190,7 +188,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             }
             catch (Exception ex)
             {
-                LogHelper.LogException(_logger, "ProcessRequestAsync", ex);
+                LogHelper.LogException(_logger, nameof(ProcessRequestAsync), ex);
             }
         }
 

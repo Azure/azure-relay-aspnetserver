@@ -25,7 +25,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             Store = store;
         }
 
-        private IDictionary<string, StringValues> Store { get; set; }
+        private IDictionary<string, StringValues> Store { get; }
 
         // Readonly after the response has been started.
         public bool IsReadOnly { get; internal set; }

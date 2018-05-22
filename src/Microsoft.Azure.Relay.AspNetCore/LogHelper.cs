@@ -19,6 +19,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
             return factory.CreateLogger(type.FullName);
         }
 
+        // TODO: CR: Would it be bad to make these extension methods? (They support logger == null)
+        // logger.LogInfo(data);
         internal static void LogInfo(ILogger logger, string data)
         {
             if (logger == null)

@@ -1,12 +1,12 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
     internal class UrlGroup : IDisposable
     {
+        private readonly ILogger _logger;
         private bool _disposed;
-        private ILogger _logger;
 
         internal UrlGroup(ILogger logger)
         {
@@ -20,15 +20,12 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
         internal unsafe void SetMaxConnections(long maxConnections)
         {
-
         }
 
         internal void RegisterPrefix(string uriPrefix, int contextId)
         {
             LogHelper.LogInfo(_logger, "Listening on prefix: " + uriPrefix);
             CheckDisposed();
-
-
         }
 
         internal bool UnregisterPrefix(string uriPrefix)
