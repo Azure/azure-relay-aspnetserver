@@ -31,3 +31,4 @@ project.lock.json
 .testPublish/
 global.json
 *.g.targets
+launchSettings.json
