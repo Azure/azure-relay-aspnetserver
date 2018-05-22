@@ -1,6 +1,8 @@
 AzureRelayServer
 =================
 
+[![Build Status](https://travis-ci.org/clemensv/azure-relay-aspnetserver.svg?branch=relay)](https://travis-ci.org/clemensv/azure-relay-aspnetserver)
+
 This repo contains a web server for ASP.NET Core based on Azure Relay Hybrid Connections HTTP.
 
 The integration supports most ASP.NET scenarios, with a few exceptions. WebSocket support will
