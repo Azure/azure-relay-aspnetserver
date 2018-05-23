@@ -7,19 +7,14 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.WebSockets;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http.Features.Authentication;
-using Microsoft.Azure.Relay;
-using Microsoft.Net.Http.Headers;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
-    internal class FeatureContext :
+    class FeatureContext :
         IHttpRequestFeature,
         IHttpConnectionFeature,
         IHttpResponseFeature,
@@ -29,8 +24,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
         IHttpUpgradeFeature,
         IHttpWebSocketFeature
     {
-        private RequestContext _requestContext;
-        private IFeatureCollection _features;
+        private readonly RequestContext _requestContext;
+        private readonly IFeatureCollection _features;
 
         private Stream _requestBody;
         private IHeaderDictionary _requestHeaders;
@@ -69,7 +64,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
             _query = Request.QueryString;
             _rawTarget = Request.RawUrl;
             _scheme = Request.Scheme;
-                                   
 
             _responseStream = new ResponseStream(requestContext.Response.Body, OnResponseStart);
         }
@@ -340,8 +334,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
             get { return (int)Response.StatusCode; }
             set { Response.StatusCode = value; }
         }
-
-
         
         string IHttpRequestIdentifierFeature.TraceIdentifier
         {
@@ -419,7 +411,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
         bool IHttpUpgradeFeature.IsUpgradableRequest => true;
 
         bool IHttpWebSocketFeature.IsWebSocketRequest => false;
-
 
         Task<Stream> IHttpUpgradeFeature.UpgradeAsync()
         {

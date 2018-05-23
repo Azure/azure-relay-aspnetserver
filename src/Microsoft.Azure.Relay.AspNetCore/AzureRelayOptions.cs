@@ -2,10 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.Azure.Relay;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
@@ -13,15 +9,18 @@ namespace Microsoft.Azure.Relay.AspNetCore
     {
         public AzureRelayOptions()
         {
-
         }
 
         public TokenProvider TokenProvider { get; set; }
-        internal bool ThrowWriteExceptions { get; set; }
-        internal long MaxRequestBodySize { get; set; }
-        internal int RequestQueueLimit { get; set; }
+
         public UrlPrefixCollection UrlPrefixes { get; } = new UrlPrefixCollection();
-        internal int? MaxConnections { get; set; }
-        
+
+        internal bool ThrowWriteExceptions { get; set; }
+
+        internal long MaxRequestBodySize { get; set; }
+
+        internal int RequestQueueLimit { get; set; }
+
+        internal int? MaxConnections { get; set; }        
     }
 }

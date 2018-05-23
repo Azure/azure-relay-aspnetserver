@@ -1,16 +1,12 @@
 using System;
-using Microsoft.AspNetCore;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Relay.AspNetCore;
-using Microsoft.Azure.Relay;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace SelfHostServer
 {
@@ -30,6 +26,7 @@ namespace SelfHostServer
                 Console.WriteLine($"dotnet {Path.GetFileName(typeof(Startup).Assembly.Location)} [connection string]");
                 return;
             }
+
             RunAsync(connectionString).GetAwaiter().GetResult();
         }
 
@@ -50,17 +47,16 @@ namespace SelfHostServer
                 await context.Response.WriteAsync("Hello world from " + context.Request.Host + " at " + DateTime.Now);
             });
         }
-
         
         private static Task RunAsync(string connectionString)
         {
             var host = new WebHostBuilder()
                 .ConfigureLogging(factory => factory.AddConsole())
                 .UseStartup<Startup>()
-                 .UseAzureRelay(options =>
-                 {
-                     options.UrlPrefixes.Add(connectionString);
-                 })
+                .UseAzureRelay(options =>
+                {
+                    options.UrlPrefixes.Add(connectionString);
+                })
                 .Build();
 
             host.Run();

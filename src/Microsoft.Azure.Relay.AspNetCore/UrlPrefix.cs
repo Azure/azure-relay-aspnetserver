@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
     public class UrlPrefix
     {
-        private Uri prefixUri;
+        private readonly Uri prefixUri;
 
         public UrlPrefix(string prefix, TokenProvider tokenProvider)
         {
@@ -51,7 +48,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public string Host => prefixUri.Host;
         public string Path => prefixUri.AbsolutePath;
         public string FullPrefix => prefixUri.AbsoluteUri;
-        public TokenProvider TokenProvider { get; private set; }
+        public TokenProvider TokenProvider { get; }
 
         public override bool Equals(object obj)
         {

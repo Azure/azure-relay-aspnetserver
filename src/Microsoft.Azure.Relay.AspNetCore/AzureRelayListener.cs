@@ -3,26 +3,22 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.Azure.Relay;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
     /// <summary>
     /// An HTTP server wrapping the Http.Sys APIs that accepts requests.
     /// </summary>
-    internal class AzureRelayListener : IDisposable
+    sealed class AzureRelayListener : IDisposable
     {
-        private List<HybridConnectionListener> _relayListeners = new List<HybridConnectionListener>();
-        private State _state = State.Stopped;
-        private object _internalLock = new object();
-        private BufferBlock<RequestContext> _pendingContexts;
-        private Action<RequestContext> requestHandler;
+        readonly List<HybridConnectionListener> _relayListeners = new List<HybridConnectionListener>();
+        readonly object _internalLock = new object();
+        readonly Action<RequestContext> requestHandler;
+        State _state = State.Stopped;
+        BufferBlock<RequestContext> _pendingContexts;
 
         public AzureRelayListener(AzureRelayOptions options, ILoggerFactory loggerFactory)
             : this(options, loggerFactory, true)
@@ -36,8 +32,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             this.requestHandler = callback;
         }
 
-
-        private AzureRelayListener(AzureRelayOptions options, ILoggerFactory loggerFactory, bool priv)
+        AzureRelayListener(AzureRelayOptions options, ILoggerFactory loggerFactory, bool priv)
         {
             _pendingContexts = new BufferBlock<RequestContext>();
             if (options == null)
@@ -53,14 +48,13 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
             Logger = LogHelper.CreateLogger(loggerFactory, typeof(AzureRelayListener));
         }
-
         
-        private Task<bool> WebSocketAcceptHandler(RelayedHttpListenerContext arg)
+        Task<bool> WebSocketAcceptHandler(RelayedHttpListenerContext arg)
         {
             return Task<bool>.FromResult(true);
         }
 
-        private void HandleRequest(RequestContext request)
+        void HandleRequest(RequestContext request)
         {
             _pendingContexts.Post(request);
         }
@@ -77,15 +71,14 @@ namespace Microsoft.Azure.Relay.AspNetCore
             Disposed,
         }
 
-        internal ILogger Logger { get; private set; }
+        ILogger Logger { get; }
 
         public AzureRelayOptions Options { get; }
 
         public bool IsListening
         {
             get { return _state == State.Started; }
-        }
-        
+        }        
 
         /// <summary>
         /// Start accepting incoming requests.
@@ -94,7 +87,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         {
             CheckDisposed();
 
-            LogHelper.LogInfo(Logger, "Start");
+            LogHelper.LogInfo(Logger, nameof(Start));
 
             // Make sure there are no race conditions between Start/Stop/Abort/Close/Dispose.
             // Start needs to setup all resources. Abort/Stop must not interfere while Start is
@@ -113,7 +106,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     {
                         foreach (var urlPrefix in Options.UrlPrefixes)
                         {
-                            RelayConnectionStringBuilder rcb = new RelayConnectionStringBuilder();
+                            var rcb = new RelayConnectionStringBuilder();
 
                             var tokenProvider = urlPrefix.TokenProvider != null ? urlPrefix.TokenProvider : Options.TokenProvider;
                             if ( tokenProvider == null )
@@ -124,6 +117,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
                                 new UriBuilder(urlPrefix.FullPrefix) { Scheme = "sb", Port = -1 }.Uri, tokenProvider );
 
                             relayListener.RequestHandler = (ctx) => requestHandler(new RequestContext(ctx, new Uri(urlPrefix.FullPrefix)));
+                            // TODO: CR: An accept handler which simply returns true is the same as no handler at all.
+                            // Would returning false and rejecting relayed connection requests be better? 
                             relayListener.AcceptHandler = WebSocketAcceptHandler;
                             _relayListeners.Add(relayListener);
                         }
@@ -133,8 +128,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
                         LogHelper.LogException(Logger, ".Ctor", exception);
                         throw;
                     }
-
-
                     foreach (var listener in _relayListeners)
                     {
                         listener.OpenAsync().GetAwaiter().GetResult();
@@ -145,7 +138,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     // Make sure the HttpListener instance can't be used if Start() failed.
                     _state = State.Disposed;
-                    LogHelper.LogException(Logger, "Start", exception);
+                    LogHelper.LogException(Logger, nameof(Start), exception);
                     throw;
                 }
             }
@@ -173,7 +166,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             }
             catch (Exception exception)
             {
-                LogHelper.LogException(Logger, "Stop", exception);
+                LogHelper.LogException(Logger, nameof(Stop), exception);
                 throw;
             }
         }
@@ -186,7 +179,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             Dispose(true);
         }
 
-        private void Dispose(bool disposing)
+        void Dispose(bool disposing)
         {
             if (!disposing)
             {
@@ -201,13 +194,13 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     {
                         return;
                     }
-                    LogHelper.LogInfo(Logger, "Dispose");
+                    LogHelper.LogInfo(Logger, nameof(Dispose));
 
                     Stop();
                 }
                 catch (Exception exception)
                 {
-                    LogHelper.LogException(Logger, "Dispose", exception);
+                    LogHelper.LogException(Logger, nameof(Dispose), exception);
                     throw;
                 }
                 finally
@@ -216,7 +209,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 }
             }
         }
-
 
         private void CheckDisposed()
         {
