@@ -22,6 +22,8 @@ samples subfolder take the connection string as input.
 
 The `.UserAzureRelay()` hosting extension is available via the `Microsoft.Azure.Relay.AspNetCore` namespace.
 
+You MUST remove all IISExpress references in the launchSettings.json of any ASP.NET Core application you create 
+from a template. The IIS Express settings are incompatible with this extension.
 
 ```
 using Microsoft.Azure.Relay.AspNetCore;

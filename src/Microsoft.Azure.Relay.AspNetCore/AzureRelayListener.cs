@@ -114,10 +114,14 @@ namespace Microsoft.Azure.Relay.AspNetCore
                         foreach (var urlPrefix in Options.UrlPrefixes)
                         {
                             RelayConnectionStringBuilder rcb = new RelayConnectionStringBuilder();
-                            
+
+                            var tokenProvider = urlPrefix.TokenProvider != null ? urlPrefix.TokenProvider : Options.TokenProvider;
+                            if ( tokenProvider == null )
+                            {
+                                throw new InvalidOperationException("No relay token provider defined.");
+                            }
                             var relayListener = new HybridConnectionListener(
-                                new UriBuilder(urlPrefix.FullPrefix) { Scheme = "sb", Port = -1 }.Uri,
-                                urlPrefix.TokenProvider != null ? urlPrefix.TokenProvider : Options.TokenProvider);
+                                new UriBuilder(urlPrefix.FullPrefix) { Scheme = "sb", Port = -1 }.Uri, tokenProvider );
 
                             relayListener.RequestHandler = (ctx) => requestHandler(new RequestContext(ctx, new Uri(urlPrefix.FullPrefix)));
                             relayListener.AcceptHandler = WebSocketAcceptHandler;
@@ -134,9 +138,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     foreach (var listener in _relayListeners)
                     {
                         listener.OpenAsync().GetAwaiter().GetResult();
-                        //listener.AcceptConnectionAsync().ContinueWith((t) => {
-                        //    Console.WriteLine(t);
-                        //});
                     }
                     _state = State.Started;
                 }
