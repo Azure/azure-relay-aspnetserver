@@ -17,8 +17,8 @@ this sampe repo at the moment. An "official" Nuget package will be available in 
 add a new rule "listen" with the Listen-permission checked.
 4. Once the rule has been created, select it and copy its connection string. 
 
-The connection string contains all information to set up a listener. The samples in the 
-samples subfolder take the connection string as input.
+The connection string contains all information to set up a listener. The [samples in the 
+samples subfolder](./samples) take the connection string as input.
 
 The `.UserAzureRelay()` hosting extension is available via the `Microsoft.Azure.Relay.AspNetCore` namespace.
 
