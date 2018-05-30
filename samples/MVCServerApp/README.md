@@ -12,6 +12,18 @@ The application is a a completely regular ASP.NET Core application, with the fol
 * The IISExpress configuration was removed from the launch settings since the application listens remotely
   and not locally.
   
+To run the sample you need an Azure Relay namespace and a Hybrid Connection Relay behind
+which the application will be hosted. Applications can currently not own the root of 
+the namespace, but need to be hosted on a path, similar to vdir applications in IIS or
+other web services. The access details for the Relay namespace and the Hybrid Connections 
+relay are summarized in a connection string.
+
+From the client-side, you will be able to access the application via
+
+`https://{namespace}.servicebus.windows.net/{hybrid-connection-name}` 
+
+Vanity domains are currently not supported, and you cannot CNAME the domain name in DNS. 
+
 ## How do I get a connection string?
 
 To run this sample, you need a connection string that includes the entity path of a Hybrid Connection entity 
