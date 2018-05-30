@@ -3,7 +3,7 @@ ASP.NET Core Hosting for Azure Relay
 
 [![Build Status](https://travis-ci.org/Azure/azure-relay-aspnetserver.svg?branch=dev)](https://travis-ci.org/Azure/azure-relay-aspnetserver)
 
-This repo contains a web server for ASP.NET Core based on Azure Relay Hybrid Connections HTTP.
+This repo contains a web server for ASP.NET Core based on Azure Relay Hybrid Connections HTTP. A NuGet package produced from this repo is available on NuGet as ["Microsoft.Azure.Relay.AspNetCore"](https://www.nuget.org/packages/Microsoft.Azure.Relay.AspNetCore).
 
 The integration supports most ASP.NET scenarios, with a few exceptions. WebSocket support will
 be added in the near future, for instance.
