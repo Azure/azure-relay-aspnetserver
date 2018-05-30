@@ -13,6 +13,12 @@ the namespace, but need to be hosted on a path, similar to vdir applications in 
 other web services. The access details for the Relay namespace and the Hybrid Connections 
 relay are summarized in a conection string.
 
+From the client-side, you will be able to access the application via
+
+`https://{namespace}.servicebus.windows.net/{hybrid-connection-name}` 
+
+Vanity domains are currently not supported, and you cannot CNAME the domain name in DNS. 
+
 ## How do I get a connection string?
 
 To run this sample, you need a connection string that includes the entity path of a Hybrid Connection entity 
