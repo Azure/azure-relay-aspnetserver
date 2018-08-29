@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http.Features.Authentication;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
@@ -17,8 +16,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             { typeof(IHttpRequestFeature), _identityFunc },
             { typeof(IHttpConnectionFeature), _identityFunc },
             { typeof(IHttpResponseFeature), _identityFunc },
-            { typeof(IHttpBufferingFeature), _identityFunc },
-            { typeof(IHttpAuthenticationFeature), _identityFunc },
+            { typeof(IHttpBufferingFeature), _identityFunc },            
             { typeof(IHttpRequestIdentifierFeature), _identityFunc },
             { typeof(IHttpSendFileFeature), _identityFunc },
             { typeof(IHttpUpgradeFeature), _identityFunc },
