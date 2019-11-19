@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public Response(RelayedHttpListenerResponse innerResponse, Uri baseUri)
         {
             _innerResponse = innerResponse;
-            _headers = new HeaderCollection();
+            _headers = new HeaderCollection((key) => this.UpdateHeaders(key));
             foreach (var hdr in innerResponse.Headers.AllKeys)
             {
                 _headers.Append(hdr, innerResponse.Headers[hdr]);
@@ -110,6 +110,25 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public Task CloseAsync()
         {
             return _innerResponse.CloseAsync();
+        }
+
+        internal void UpdateHeaders(string key)
+        {
+            if (key == null)
+            {
+                // entire collection was cleared
+                _innerResponse.Headers.Clear();
+            }
+            else if (Headers.ContainsKey(key))
+            {
+                // key was updated
+                _innerResponse.Headers[key] = Headers[key];
+            }
+            else
+            {
+                // key was removed
+                _innerResponse.Headers.Remove(key);
+            }
         }
     }
 }

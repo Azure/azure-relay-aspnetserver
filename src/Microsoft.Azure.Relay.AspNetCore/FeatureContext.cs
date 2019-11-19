@@ -293,7 +293,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         IHeaderDictionary IHttpResponseFeature.Headers
         {
             get { return Response.Headers; }
-            set { Response.Headers = new HeaderCollection(value); }
+            set { Response.Headers = new HeaderCollection(value, (key) => Response.UpdateHeaders(key)); }
         }
 
         bool IHttpResponseFeature.HasStarted => false;
