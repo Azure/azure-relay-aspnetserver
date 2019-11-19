@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en" target-language="fr" original="../Resources.resx">
+    <body>
+      <trans-unit id="Exception_ArrayTooSmall">
+        <source>The destination array is too small.</source>
+        <target state="new">The destination array is too small.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_EndCalledMultipleTimes">
+        <source>End has already been called.</source>
+        <target state="new">End has already been called.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_InvalidStatusCode">
+        <source>The status code '{0}' is not supported.</source>
+        <target state="new">The status code '{0}' is not supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_NoSeek">
+        <source>The stream is not seekable.</source>
+        <target state="new">The stream is not seekable.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_PrefixAlreadyRegistered">
+        <source>The prefix '{0}' is already registered.</source>
+        <target state="new">The prefix '{0}' is already registered.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_ReadOnlyStream">
+        <source>This stream only supports read operations.</source>
+        <target state="new">This stream only supports read operations.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_TooMuchWritten">
+        <source>More data written than specified in the Content-Length header.</source>
+        <target state="new">More data written than specified in the Content-Length header.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_UnsupportedScheme">
+        <source>Only the http and https schemes are supported.</source>
+        <target state="new">Only the http and https schemes are supported.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_WriteOnlyStream">
+        <source>This stream only supports write operations.</source>
+        <target state="new">This stream only supports write operations.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Exception_WrongIAsyncResult">
+        <source>The given IAsyncResult does not match this opperation.</source>
+        <target state="new">The given IAsyncResult does not match this opperation.</target>
+        <note />
+      </trans-unit>
+      <trans-unit id="Warning_ExceptionInOnResponseCompletedAction">
+        <source>An exception occured while running an action registered with {0}.</source>
+        <target state="new">An exception occured while running an action registered with {0}.</target>
+        <note />
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
