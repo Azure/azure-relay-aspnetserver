@@ -104,22 +104,12 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
         public void Close()
         {
-            CopyHeaders();
             _innerResponse.Close();
         }
 
         public Task CloseAsync()
         {
-            CopyHeaders();
             return _innerResponse.CloseAsync();
-        }
-
-        private void CopyHeaders()
-        {
-            foreach (var hdr in Headers.Keys)
-            {
-                _innerResponse.Headers[hdr] = Headers[hdr];
-            }
         }
     }
 }
