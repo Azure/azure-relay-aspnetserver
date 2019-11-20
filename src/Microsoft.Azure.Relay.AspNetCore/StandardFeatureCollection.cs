@@ -16,7 +16,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             { typeof(IHttpRequestFeature), _identityFunc },
             { typeof(IHttpConnectionFeature), _identityFunc },
             { typeof(IHttpResponseFeature), _identityFunc },
-#if NETSTANDARD2_1
+#if !NETSTANDARD2_0
             { typeof(IHttpResponseBodyFeature), _identityFunc },
 #endif
 #if NETSTANDARD2_0

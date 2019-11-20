@@ -14,7 +14,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
     {
         private long? _contentLength;
         private StringValues _contentLengthText;
-        private Action<string> _onOnPropertyChange;
+        private readonly Action<string> _onOnPropertyChange;
 
         public HeaderCollection()
             : this(new Dictionary<string, StringValues>(4, StringComparer.OrdinalIgnoreCase))
@@ -261,6 +261,5 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 }
             }
         }
-
     }
 }

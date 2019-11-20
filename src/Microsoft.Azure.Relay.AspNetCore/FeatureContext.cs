@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
-#if NETSTANDARD2_1
+#if !NETSTANDARD2_0
 using System.IO.Pipelines;
 #endif
 
@@ -22,11 +22,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
         IHttpConnectionFeature,
         IHttpResponseFeature,
         IHttpRequestIdentifierFeature,
-#if NETSTANDARD2_1
-        IHttpResponseBodyFeature,
-#else
+#if NETSTANDARD2_0
         IHttpBufferingFeature,
         IHttpSendFileFeature,
+#else
+        IHttpResponseBodyFeature,
 #endif
         IHttpUpgradeFeature,
         IHttpWebSocketFeature
@@ -50,7 +50,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         private string _connectionId;
         private string _traceIdentitfier;
         private Stream _responseStream;
-#if NETSTANDARD2_1
+#if !NETSTANDARD2_0
         private PipeWriter _pipeWriter;
 #endif
 
@@ -76,7 +76,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             _scheme = Request.Scheme;
 
             _responseStream = new ResponseStream(requestContext.Response.Body, OnResponseStart);
-#if NETSTANDARD2_1
+#if !NETSTANDARD2_0
             _pipeWriter = PipeWriter.Create(_responseStream, new StreamPipeWriterOptions(leaveOpen: true));
 #endif
         }
@@ -442,7 +442,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         }
 #endif
 
-#if NETSTANDARD2_1
+#if !NETSTANDARD2_0
         Stream IHttpResponseBodyFeature.Stream => _responseStream;
 
         PipeWriter IHttpResponseBodyFeature.Writer => _pipeWriter;
@@ -452,9 +452,9 @@ namespace Microsoft.Azure.Relay.AspNetCore
             throw new NotImplementedException();
         }
 
-        async Task IHttpResponseBodyFeature.StartAsync(CancellationToken cancellationToken)
+        Task IHttpResponseBodyFeature.StartAsync(CancellationToken cancellationToken)
         {
-            await OnResponseStart();
+            return OnResponseStart();
         }
 
         async Task IHttpResponseBodyFeature.SendFileAsync(string path, long offset, long? length, CancellationToken cancellation)
@@ -463,9 +463,9 @@ namespace Microsoft.Azure.Relay.AspNetCore
             await Response.SendFileAsync(path, offset, length, cancellation);
         }
 
-        async Task IHttpResponseBodyFeature.CompleteAsync()
+        Task IHttpResponseBodyFeature.CompleteAsync()
         {
-            await OnCompleted();
+            return OnCompleted();
         }
 #endif
     }
