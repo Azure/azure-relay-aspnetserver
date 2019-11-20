@@ -29,6 +29,6 @@ project.lock.json
 .vscode/
 .build/
 .testPublish/
-global.json
 *.g.targets
 launchSettings.json
+.dotnet/

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -52,7 +51,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     Assert.Equal("Overlapped", support.Get<string>("sendfile.Concurrency"));
                     */
 
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                    var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                     var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                     Assert.NotNull(sendFile);
                 }
                 catch (Exception ex)
@@ -116,7 +119,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 return sendFile.SendFileAsync(AbsoluteFilePath, 0, null, CancellationToken.None);
             }))
             {
@@ -135,7 +142,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 return sendFile.SendFileAsync(RelativeFilePath, 0, null, CancellationToken.None);
             }))
             {
@@ -154,7 +165,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 return sendFile.SendFileAsync(AbsoluteFilePath, 0, null, CancellationToken.None);
             }))
             {
@@ -173,7 +188,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 sendFile.SendFileAsync(AbsoluteFilePath, 0, null, CancellationToken.None).Wait();
                 return sendFile.SendFileAsync(AbsoluteFilePath, 0, null, CancellationToken.None);
             }))
@@ -193,7 +212,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 return sendFile.SendFileAsync(AbsoluteFilePath, 0, FileLength / 2, CancellationToken.None);
             }))
             {
@@ -213,7 +236,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, async httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() =>
                     sendFile.SendFileAsync(AbsoluteFilePath, 1234567, null, CancellationToken.None));
                 completed = true;
@@ -232,7 +259,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, async httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() =>
                     sendFile.SendFileAsync(AbsoluteFilePath, 0, 1234567, CancellationToken.None));
                 completed = true;
@@ -316,7 +347,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 httpContext.Response.Headers["Content-lenGth"] = "0";
                 return sendFile.SendFileAsync(AbsoluteFilePath, 0, 0, CancellationToken.None);
             }))
@@ -344,7 +379,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     Assert.Same(state, httpContext);
                     return Task.FromResult(0);
                 }, httpContext);
+#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+                var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif
                 return sendFile.SendFileAsync(AbsoluteFilePath, 0, 10, CancellationToken.None);
             }))
             {

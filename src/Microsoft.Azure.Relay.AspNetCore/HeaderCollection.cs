@@ -14,10 +14,16 @@ namespace Microsoft.Azure.Relay.AspNetCore
     {
         private long? _contentLength;
         private StringValues _contentLengthText;
+        private readonly Action<string> _onOnPropertyChange;
 
         public HeaderCollection()
             : this(new Dictionary<string, StringValues>(4, StringComparer.OrdinalIgnoreCase))
         {
+        }
+
+        public HeaderCollection(Action<string> onOnPropertyChange) : this()
+        {
+            _onOnPropertyChange = onOnPropertyChange;
         }
 
         public HeaderCollection(IDictionary<string, StringValues> store)
@@ -25,7 +31,12 @@ namespace Microsoft.Azure.Relay.AspNetCore
             Store = store;
         }
 
-        private IDictionary<string, StringValues> Store { get; }
+        public HeaderCollection(IDictionary<string, StringValues> store, Action<string> onOnPropertyChange) : this(store)
+        {
+            _onOnPropertyChange = onOnPropertyChange;
+        }
+
+    private IDictionary<string, StringValues> Store { get; }
 
         // Readonly after the response has been started.
         public bool IsReadOnly { get; internal set; }
@@ -50,6 +61,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     ValidateHeaderCharacters(value);
                     Store[key] = value;
                 }
+                _onOnPropertyChange?.Invoke(key);
             }
         }
 
@@ -62,6 +74,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 ValidateHeaderCharacters(key);
                 ValidateHeaderCharacters(value);
                 Store[key] = value;
+                _onOnPropertyChange?.Invoke(key);
             }
         }
 
@@ -123,6 +136,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     _contentLengthText = StringValues.Empty;
                     _contentLength = null;
                 }
+                _onOnPropertyChange?.Invoke(HttpKnownHeaderNames.ContentLength);
             }
         }
 
@@ -132,6 +146,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             ValidateHeaderCharacters(item.Key);
             ValidateHeaderCharacters(item.Value);
             Store.Add(item);
+            _onOnPropertyChange?.Invoke(item.Key);
         }
 
         public void Add(string key, StringValues value)
@@ -140,6 +155,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             ValidateHeaderCharacters(key);
             ValidateHeaderCharacters(value);
             Store.Add(key, value);
+            _onOnPropertyChange?.Invoke(key);
         }
 
         public void Append(string key, string value)
@@ -150,12 +166,14 @@ namespace Microsoft.Azure.Relay.AspNetCore
             StringValues values;
             Store.TryGetValue(key, out values);
             Store[key] = StringValues.Concat(values, value);
+            _onOnPropertyChange?.Invoke(key);
         }
 
         public void Clear()
         {
             ThrowIfReadOnly();
             Store.Clear();
+            _onOnPropertyChange?.Invoke(null);
         }
 
         public bool Contains(KeyValuePair<string, StringValues> item)
@@ -191,13 +209,17 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public bool Remove(KeyValuePair<string, StringValues> item)
         {
             ThrowIfReadOnly();
-            return Store.Remove(item);
+            var result = Store.Remove(item);
+            _onOnPropertyChange?.Invoke(item.Key);
+            return result;
         }
 
         public bool Remove(string key)
         {
             ThrowIfReadOnly();
-            return Store.Remove(key);
+            var result = Store.Remove(key);
+            _onOnPropertyChange?.Invoke(key);
+            return result;
         }
 
         public bool TryGetValue(string key, out StringValues value)

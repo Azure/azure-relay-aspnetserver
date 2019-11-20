@@ -6,7 +6,7 @@ branches:
   - /^release\/.*$/
   - /^(.*\/)?ci-.*$/
 build_script:
-- ps: .\run.ps1 default-build
+- cmd: .\build.cmd
 clone_depth: 1
 environment:
   global:

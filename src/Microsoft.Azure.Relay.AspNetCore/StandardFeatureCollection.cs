@@ -16,9 +16,14 @@ namespace Microsoft.Azure.Relay.AspNetCore
             { typeof(IHttpRequestFeature), _identityFunc },
             { typeof(IHttpConnectionFeature), _identityFunc },
             { typeof(IHttpResponseFeature), _identityFunc },
-            { typeof(IHttpBufferingFeature), _identityFunc },            
-            { typeof(IHttpRequestIdentifierFeature), _identityFunc },
+#if !NETSTANDARD2_0
+            { typeof(IHttpResponseBodyFeature), _identityFunc },
+#endif
+#if NETSTANDARD2_0
+            { typeof(IHttpBufferingFeature), _identityFunc },
             { typeof(IHttpSendFileFeature), _identityFunc },
+#endif
+            { typeof(IHttpRequestIdentifierFeature), _identityFunc },
             { typeof(IHttpUpgradeFeature), _identityFunc },
             { typeof(IHttpWebSocketFeature), _identityFunc },
             { typeof(RelayedHttpListenerContext), ctx => ctx.RequestContext }

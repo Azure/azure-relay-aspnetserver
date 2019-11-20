@@ -11,6 +11,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+#if !NETSTANDARD2_0
+using System.IO.Pipelines;
+#endif
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
@@ -18,9 +21,13 @@ namespace Microsoft.Azure.Relay.AspNetCore
         IHttpRequestFeature,
         IHttpConnectionFeature,
         IHttpResponseFeature,
-        IHttpBufferingFeature,
         IHttpRequestIdentifierFeature,
+#if NETSTANDARD2_0
+        IHttpBufferingFeature,
         IHttpSendFileFeature,
+#else
+        IHttpResponseBodyFeature,
+#endif
         IHttpUpgradeFeature,
         IHttpWebSocketFeature
     {
@@ -43,7 +50,10 @@ namespace Microsoft.Azure.Relay.AspNetCore
         private string _connectionId;
         private string _traceIdentitfier;
         private Stream _responseStream;
-        
+#if !NETSTANDARD2_0
+        private PipeWriter _pipeWriter;
+#endif
+
         private Fields _initializedFields;
 
         private List<Tuple<Func<object, Task>, object>> _onStartingActions = new List<Tuple<Func<object, Task>, object>>();
@@ -66,6 +76,9 @@ namespace Microsoft.Azure.Relay.AspNetCore
             _scheme = Request.Scheme;
 
             _responseStream = new ResponseStream(requestContext.Response.Body, OnResponseStart);
+#if !NETSTANDARD2_0
+            _pipeWriter = PipeWriter.Create(_responseStream, new StreamPipeWriterOptions(leaveOpen: true));
+#endif
         }
 
         internal IFeatureCollection Features => _features;
@@ -271,16 +284,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
             }
         }
 
-        void IHttpBufferingFeature.DisableRequestBuffering()
-        {
-            // There is no request buffering.
-        }
-
-        void IHttpBufferingFeature.DisableResponseBuffering()
-        {
-            // TODO: What about native buffering?
-        }
-
         Stream IHttpResponseFeature.Body
         {
             get { return _responseStream; }
@@ -290,7 +293,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         IHeaderDictionary IHttpResponseFeature.Headers
         {
             get { return Response.Headers; }
-            set { Response.Headers = new HeaderCollection(value); }
+            set { Response.Headers = new HeaderCollection(value, (key) => Response.UpdateHeaders(key)); }
         }
 
         bool IHttpResponseFeature.HasStarted => false;
@@ -421,11 +424,49 @@ namespace Microsoft.Azure.Relay.AspNetCore
         {
             throw new NotImplementedException();
         }
-
+#if NETSTANDARD2_0
         async Task IHttpSendFileFeature.SendFileAsync(string path, long offset, long? length, CancellationToken cancellation)
         {
             await OnResponseStart();
             await Response.SendFileAsync(path, offset, length, cancellation);
         }
+
+        void IHttpBufferingFeature.DisableRequestBuffering()
+        {
+            // There is no request buffering.
+        }
+
+        void IHttpBufferingFeature.DisableResponseBuffering()
+        {
+            // TODO: What about native buffering?
+        }
+#endif
+
+#if !NETSTANDARD2_0
+        Stream IHttpResponseBodyFeature.Stream => _responseStream;
+
+        PipeWriter IHttpResponseBodyFeature.Writer => _pipeWriter;
+
+        void IHttpResponseBodyFeature.DisableBuffering()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task IHttpResponseBodyFeature.StartAsync(CancellationToken cancellationToken)
+        {
+            return OnResponseStart();
+        }
+
+        async Task IHttpResponseBodyFeature.SendFileAsync(string path, long offset, long? length, CancellationToken cancellation)
+        {
+            await OnResponseStart();
+            await Response.SendFileAsync(path, offset, length, cancellation);
+        }
+
+        Task IHttpResponseBodyFeature.CompleteAsync()
+        {
+            return OnCompleted();
+        }
+#endif
     }
 }

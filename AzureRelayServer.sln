@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 15.0.26730.03
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99D5E5F3-88F5-4CCF-8D8C-717C8925DF09}"
 	ProjectSection(SolutionItems) = preProject
@@ -20,13 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		.travis.yml = .travis.yml
 		build.cmd = build.cmd
-		build.ps1 = build.ps1
 		build.sh = build.sh
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 		NuGet.config = NuGet.config
 		README.md = README.md
-		version.xml = version.xml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SelfHostServer", "samples\SelfHostServer\SelfHostServer.csproj", "{1236F93A-AC5C-4A77-9477-C88F040151CA}"

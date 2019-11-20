@@ -29,7 +29,7 @@ namespace MVCServerApp
         {
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
+                //app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
