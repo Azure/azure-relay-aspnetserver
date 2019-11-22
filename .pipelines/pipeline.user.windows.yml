@@ -13,7 +13,7 @@ version:
   major: 1
   minor: 2
   system: 'RevisionCounter'
-  tag: "private"
+  exclude_commit: true    
 
 signing_options:
   profile: 'external_distribution'
