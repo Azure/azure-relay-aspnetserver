@@ -7,6 +7,7 @@ if defined TF_BUILD (
     set BuildConfiguration=Debug
 )
 
+echo dotnet test "%~dp0AzureRelayServer.sln" --no-build --no-restore --blame --logger:trx --configuration %BuildConfiguration% 
 call dotnet test "%~dp0AzureRelayServer.sln" --no-build --no-restore --blame --logger:trx --configuration %BuildConfiguration% || (
     echo Failed to run tests
     exit /b 1
