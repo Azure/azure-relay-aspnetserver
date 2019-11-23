@@ -56,13 +56,13 @@ package:
           include:
             - '**/*.nupkg'
 
-#test:
-#  commands:
-#   - !!testcommand
-#     name: 'Run CSharp Tests'
-#     command: 'test.cmd'
-#     testresults:
-#       - title: 'CSharp UnitTests'
-#         type: 'vstest'
-#         include:
-#           - '**/*.trx'
+test:
+  commands:
+   - !!testcommand
+     name: 'Run CSharp Tests'
+     command: 'test.cmd'
+     testresults:
+       - title: 'CSharp UnitTests'
+         type: 'vstest'
+         include:
+           - '**/*.trx'
