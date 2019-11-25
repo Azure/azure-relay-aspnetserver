@@ -3,12 +3,16 @@
   <PropertyGroup>
     <Description>ASP.NET Core HTTP server that uses Azure Relay.</Description>
     <Authors>Microsoft</Authors>
+    <copyright>&#169; Microsoft Corporation. All rights reserved.</copyright>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageTags>aspnetcore;weblistener;AzureRelay</PackageTags>
+    <PackageReleaseNotes>https://github.com/Azure/azure-relay-aspnetserver/releases</PackageReleaseNotes>
+    <PackageTags>aspnetcore;weblistener;AzureRelay;Azure;Relay;AspNet;Hybrid Connection;HybridConnection;ServiceBus;Service Bus</PackageTags>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-relay-dotnet/master/relay.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/Azure/azure-relay-aspnetserver</PackageProjectUrl>
     <IsPackable>True</IsPackable>
   </PropertyGroup>
 
