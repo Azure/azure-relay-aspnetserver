@@ -19,13 +19,13 @@ else
   BuildConfiguration="Debug"
 fi
 
-echo "dotnet build '${scriptroot}/AzureRelayServer.sln' --configuration ${BuildConfiguration}"
-dotnet build "${scriptroot}/AzureRelayServer.sln" --configuration ${BuildConfiguration}
+echo "dotnet test '${scriptroot}/AzureRelayServer.sln' --no-build --no-restore --blame --logger:trx --configuration ${BuildConfiguration}"
+dotnet test "${scriptroot}/AzureRelayServer.sln" --no-build --no-restore --blame --logger:trx --configuration ${BuildConfiguration}
 
 if [ $? -eq 0 ]
 then
   exit 0
 else
-  echo "Error during running dotnet build" >&2
+  echo "Error during running dotnet test" >&2
   exit 1
 fi

@@ -13,19 +13,13 @@ while [[ -h $source ]]; do
 done
 scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
 
-if [ ${TF_BUILD}="True" ]; then
-  BuildConfiguration="Release"
-else
-  BuildConfiguration="Debug"
-fi
-
-echo "dotnet build '${scriptroot}/AzureRelayServer.sln' --configuration ${BuildConfiguration}"
-dotnet build "${scriptroot}/AzureRelayServer.sln" --configuration ${BuildConfiguration}
+echo "dotnet restore '${scriptroot}/AzureRelayServer.sln'"
+dotnet restore "${scriptroot}/AzureRelayServer.sln"
 
 if [ $? -eq 0 ]
 then
   exit 0
 else
-  echo "Error during running dotnet build" >&2
+  echo "Error during running dotnet restore" >&2
   exit 1
 fi
