@@ -25,3 +25,4 @@ jobs:
       run: dotnet build --configuration Release
     - name: Package with dotnet
       run: dotnet pack --configuration Release
+    - run: dotnet --info
