@@ -103,9 +103,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
         internal static TokenProvider CreateTokenProvider()
         {
             var connectionString = Environment.GetEnvironmentVariable("RELAY_TEST_CONNECTIONSTRING_NOAUTH");
-            
-            Assert.NotNull(connectionString);
-            Assert.False(string.IsNullOrEmpty(connectionString));
+            Assert.False(string.IsNullOrEmpty(connectionString), "RELAY_TEST_CONNECTIONSTRING_NOAUTH must be set");
+
             var cb = new RelayConnectionStringBuilder(connectionString);
             if (!string.IsNullOrEmpty(cb.SharedAccessSignature))
             {
@@ -120,9 +119,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
         internal static string GetRelayUrl()
         {
             var connectionString = Environment.GetEnvironmentVariable("RELAY_TEST_CONNECTIONSTRING_NOAUTH");
+            Assert.False(string.IsNullOrEmpty(connectionString), "RELAY_TEST_CONNECTIONSTRING_NOAUTH must be set");
 
-            Assert.NotNull(connectionString);
-            Assert.False(string.IsNullOrEmpty(connectionString));
             var cb = new RelayConnectionStringBuilder(connectionString);
 
             Assert.NotNull(connectionString);
