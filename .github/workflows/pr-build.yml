@@ -3,7 +3,7 @@ name: azure-relay-aspnetserver
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-windows:
     name: Build 'azure-relay-aspnetserver' on windows-latest
 
     runs-on: 'windows-latest'
@@ -16,7 +16,7 @@ jobs:
       run: .\build.cmd
     - name: Package
       run: .\package.cmd
-  build:
+  build-nix:
     strategy:
       matrix:
         platform: [ 'ubuntu-latest', 'macos-latest' ]
