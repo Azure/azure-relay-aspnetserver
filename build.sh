@@ -13,7 +13,7 @@ while [[ -h $source ]]; do
 done
 scriptroot="$( cd -P "$( dirname "$source" )" && pwd )"
 
-if [ ${TF_BUILD,,}="true" ]; then
+if [ ${TF_BUILD}="True" ]; then
   BuildConfiguration="Release"
 else
   BuildConfiguration="Debug"
