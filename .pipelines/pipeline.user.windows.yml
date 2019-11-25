@@ -61,8 +61,6 @@ test:
    - !!testcommand
      name: 'Run CSharp Tests'
      command: 'test.cmd'
-     env:
-       RELAY_TEST_CONNECTIONSTRING_NOAUTH: $(RELAY_TEST_CONNECTIONSTRING_NOAUTH)
      testresults:
        - title: 'CSharp UnitTests'
          type: 'vstest'
