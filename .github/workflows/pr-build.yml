@@ -1,0 +1,27 @@
+name: azure-relay-aspnetserver
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
+    name: Build 'azure-relay-aspnetserver' on ${{ matrix.platform }}
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core 3.0.100
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '2.2.103'
+    - name: Setup .NET Core 2.2.103
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '2.2.103'
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Package with dotnet
+      run: dotnet pack --configuration Release
