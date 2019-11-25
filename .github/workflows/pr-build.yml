@@ -23,7 +23,7 @@ jobs:
         dotnet-version: '3.0.100'
     - name: copy .NET Core 2.2.402
       run: |
-        rsync -a ${DOTNET_ROOT/../../2.2.402/shared}/* $DOTNET_ROOT/3.0.100/shared
+        rsync -a ${DOTNET_ROOT}/../../2.2.402/shared/* $DOTNET_ROOT/shared
     - run: dotnet --info
     - name: Restore
       run: ./restore.sh
