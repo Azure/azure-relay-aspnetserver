@@ -115,6 +115,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
                             }
                             var relayListener = new HybridConnectionListener(
                                 new UriBuilder(urlPrefix.FullPrefix) { Scheme = "sb", Port = -1 }.Uri, tokenProvider );
+                            
+                            relayListener.Proxy = Options.Proxy;
 
                             relayListener.RequestHandler = (ctx) => requestHandler(new RequestContext(ctx, new Uri(urlPrefix.FullPrefix)));
                             // TODO: CR: An accept handler which simply returns true is the same as no handler at all.
