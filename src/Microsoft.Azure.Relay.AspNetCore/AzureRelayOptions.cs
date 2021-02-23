@@ -21,16 +21,14 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public IWebProxy Proxy
         {
             get { return proxy; }
-            set {
+            set
+            {
                 UseCustomProxy = true;
                 proxy = value;
             }
         }
 
-
         public bool UseCustomProxy { get; set; }
-
-
 
         internal bool ThrowWriteExceptions { get; set; }
 
