@@ -1,4 +1,4 @@
-﻿// Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -16,7 +16,21 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
         public UrlPrefixCollection UrlPrefixes { get; } = new UrlPrefixCollection();
 
-        public IWebProxy Proxy { get; set; }
+        private IWebProxy proxy;
+
+        public IWebProxy Proxy
+        {
+            get { return proxy; }
+            set {
+                UseCustomProxy = true;
+                proxy = value;
+            }
+        }
+
+
+        public bool UseCustomProxy { get; set; }
+
+
 
         internal bool ThrowWriteExceptions { get; set; }
 
@@ -24,6 +38,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
         internal int RequestQueueLimit { get; set; }
 
-        internal int? MaxConnections { get; set; }        
+        internal int? MaxConnections { get; set; }
     }
 }
