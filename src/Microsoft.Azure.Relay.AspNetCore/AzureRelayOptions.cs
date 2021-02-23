@@ -8,6 +8,8 @@ namespace Microsoft.Azure.Relay.AspNetCore
 {
     public class AzureRelayOptions
     {
+        private IWebProxy proxy;
+        
         public AzureRelayOptions()
         {
         }
@@ -15,8 +17,6 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public TokenProvider TokenProvider { get; set; }
 
         public UrlPrefixCollection UrlPrefixes { get; } = new UrlPrefixCollection();
-
-        private IWebProxy proxy;
 
         public IWebProxy Proxy
         {
