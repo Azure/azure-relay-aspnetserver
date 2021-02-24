@@ -3,21 +3,41 @@ name: azure-relay-aspnetserver
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-windows:
+    name: Build 'azure-relay-aspnetserver' on windows-latest
+
+    runs-on: 'windows-latest'
+
+    steps:
+    - uses: actions/checkout@v1
+    - run: dotnet --info
+    - name: Restore
+      run: .\restore.cmd
+    - name: Build
+      run: .\build.cmd
+    - name: Package
+      run: .\package.cmd
+  build-nix:
     strategy:
       matrix:
-        platform: ['windows-latest', 'ubuntu-latest', 'macos-latest' ]
-        dotnet-version: ["3.1.406", "2.2.207"]
+        platform: [ 'ubuntu-latest', 'macos-latest' ]
     name: Build 'azure-relay-aspnetserver' on ${{ matrix.platform }}
 
     runs-on: ${{ matrix.platform }}
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core 2.2
+    - name: Setup .NET Core 2.2.402
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: ${{matrix.dotnet-version}}
+        dotnet-version: '2.2.402'
+    - name: Setup .NET Core 3.0.100
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.0.100'
+    - name: copy .NET Core 2.2.402
+      run: |
+        rsync -a ${DOTNET_ROOT}/../../2.2.402/x64/shared/ $DOTNET_ROOT/shared
     - run: dotnet --info
     - name: Restore
       run: ./restore.sh
