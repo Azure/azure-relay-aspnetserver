@@ -1,10 +1,22 @@
 name: azure-relay-aspnetserver
 on: [push, pull_request]
 jobs:
-  build:
+  build-windows:
+    name: Build 'azure-relay-aspnetserver' on windows-latest	
+    runs-on: 'windows-latest'	
+    steps:	
+    - uses: actions/checkout@v1	
+    - run: dotnet --info	
+    - name: Restore	
+      run: .\restore.cmd	
+    - name: Build	
+      run: .\build.cmd	
+    - name: Package	
+      run: .\package.cmd
+  build-ngix:
     strategy:
       matrix:
-        platform: ['windows-latest', 'ubuntu-latest', 'macos-latest' ]
+        platform: ['ubuntu-latest', 'macos-latest' ]
     name: Build 'azure-relay-aspnetserver' for ${{ matrix.platform }}
     runs-on: ${{ matrix.platform }}
     steps:
