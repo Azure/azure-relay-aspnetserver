@@ -1,16 +1,12 @@
 name: azure-relay-aspnetserver
-
 on: [push, pull_request]
-
 jobs:
   build:
     strategy:
       matrix:
         platform: ['windows-latest', 'ubuntu-latest', 'macos-latest' ]
     name: Build 'azure-relay-aspnetserver' for ${{ matrix.platform }}
-
     runs-on: ${{ matrix.platform }}
-
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core v3
