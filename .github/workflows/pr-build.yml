@@ -10,14 +10,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core 2.2.207
+    - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '2.2.207'
-    - name: Setup .NET Core 3.0.100
+        dotnet-version: '2.2.x'
+    - name: Setup .NET Core 3.1
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.0.100'
+        dotnet-version: '3.1.x'
     - run: dotnet --info
     - name: Restore
       run: .\restore.cmd
@@ -35,14 +35,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup .NET Core 2.2.207
+    - name: Setup .NET Core 2.2
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '2.2.207'
-    - name: Setup .NET Core 3.0.100
+        dotnet-version: '2.2.x'
+    - name: Setup .NET Core 3.1
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '3.0.100'
+        dotnet-version: '3.1.x'
     - run: dotnet --info
     - name: Restore
       run: ./restore.sh
