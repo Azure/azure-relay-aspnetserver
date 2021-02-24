@@ -48,7 +48,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
 
             Logger = LogHelper.CreateLogger(loggerFactory, typeof(AzureRelayListener));
         }
-        
+
         Task<bool> WebSocketAcceptHandler(RelayedHttpListenerContext arg)
         {
             return Task<bool>.FromResult(true);
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         public bool IsListening
         {
             get { return _state == State.Started; }
-        }        
+        }
 
         /// <summary>
         /// Start accepting incoming requests.
@@ -109,12 +109,17 @@ namespace Microsoft.Azure.Relay.AspNetCore
                             var rcb = new RelayConnectionStringBuilder();
 
                             var tokenProvider = urlPrefix.TokenProvider != null ? urlPrefix.TokenProvider : Options.TokenProvider;
-                            if ( tokenProvider == null )
+                            if (tokenProvider == null)
                             {
                                 throw new InvalidOperationException("No relay token provider defined.");
                             }
                             var relayListener = new HybridConnectionListener(
-                                new UriBuilder(urlPrefix.FullPrefix) { Scheme = "sb", Port = -1 }.Uri, tokenProvider );
+                                new UriBuilder(urlPrefix.FullPrefix) { Scheme = "sb", Port = -1 }.Uri, tokenProvider);
+
+                            if (Options.UseCustomProxy)
+                            {
+                                relayListener.Proxy = Options.Proxy;
+                            }
 
                             relayListener.RequestHandler = (ctx) => requestHandler(new RequestContext(ctx, new Uri(urlPrefix.FullPrefix)));
                             // TODO: CR: An accept handler which simply returns true is the same as no handler at all.
