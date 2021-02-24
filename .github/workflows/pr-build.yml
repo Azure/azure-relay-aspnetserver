@@ -43,9 +43,6 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '3.0.100'
-    - name: copy .NET Core 2.2.207
-      run: |
-        rsync -a ${DOTNET_ROOT}/../../2.2.207/x64/shared/ $DOTNET_ROOT/shared
     - run: dotnet --info
     - name: Restore
       run: ./restore.sh
