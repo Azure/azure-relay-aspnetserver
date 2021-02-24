@@ -9,7 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Testing" Version="2.1.0-rtm-30722" />
     <PackageReference Include="System.Net.Http.WinHttpHandler" Version="4.5.0" />
     <PackageReference Include="Microsoft.Azure.Relay" Version="$(MicrosoftAzureRelayPackageVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
