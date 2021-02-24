@@ -24,7 +24,7 @@ The `.UseAzureRelay()` hosting extension is available via the `Microsoft.Azure.R
 You MUST remove all IISExpress references in the launchSettings.json of any ASP.NET Core application you create 
 from a template. The IIS Express settings are incompatible with this extension.
 
-```
+``` csharp
 using Microsoft.Azure.Relay.AspNetCore;
 
 
