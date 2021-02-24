@@ -6,10 +6,6 @@
     <OutputType>Exe</OutputType>
     <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\launchSettings.json" />
-  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Relay.AspNetCore\Microsoft.Azure.Relay.AspNetCore.csproj" />
