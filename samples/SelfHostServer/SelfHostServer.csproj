@@ -1,15 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFrameworks>netcoreapp3.0;netcoreapp2.1</TargetFrameworks>
+      <TargetFrameworks>netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
       <TargetFrameworks Condition="'$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net461</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <ServerGarbageCollection>true</ServerGarbageCollection>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\launchSettings.json" />
-  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.Azure.Relay.AspNetCore\Microsoft.Azure.Relay.AspNetCore.csproj" />

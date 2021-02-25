@@ -1,17 +1,16 @@
 ASP.NET Core Hosting for Azure Relay
 =================
 
-[![Build Status](https://travis-ci.org/Azure/azure-relay-aspnetserver.svg?branch=dev)](https://travis-ci.org/Azure/azure-relay-aspnetserver)
+![](https://github.com/Azure/azure-relay-aspnetserver/workflows/azure-relay-aspnetserver/badge.svg?branch=dev)
 
-This repo contains a web server for ASP.NET Core based on Azure Relay Hybrid Connections HTTP. A NuGet package produced from this repo is available on NuGet as ["Microsoft.Azure.Relay.AspNetCore"](https://www.nuget.org/packages/Microsoft.Azure.Relay.AspNetCore).
+This repo contains a web server for ASP.NET Core based on Azure Relay Hybrid Connections HTTP. A NuGet package produced from this repo is available on NuGet as [Microsoft.Azure.Relay.AspNetCore](https://www.nuget.org/packages/Microsoft.Azure.Relay.AspNetCore).
 
 The integration supports most ASP.NET scenarios, with a few exceptions. WebSocket support will
 be added in the near future, for instance.
 
 To use the extension, take the following steps:
 
-1. Add the Microsoft.Azure.Relay.AspNetCore assembly to your project. The assembly must be built from 
-this sampe repo at the moment. An "official" Nuget package will be available in a little while.
+1. Add the [Microsoft.Azure.Relay.AspNetCore](https://www.nuget.org/packages/Microsoft.Azure.Relay.AspNetCore) assembly to your project.
 2. [Create a Hybrid Connection](https://docs.microsoft.com/en-us/azure/service-bus-relay/relay-hybrid-connections-http-requests-dotnet-get-started)
 3. After you have created the Hybrid Connection, find its "Shared Access Policies" portal tab and
 add a new rule "listen" with the Listen-permission checked.
