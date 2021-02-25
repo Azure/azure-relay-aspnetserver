@@ -2,7 +2,7 @@
 PUSHD "%~dp0"
 
 rem CDP_PACKAGE_VERSION_SEMANTIC set by internal 
-if not defined CDP_PACKAGE_VERSION_SEMANTIC set CDP_PACKAGE_VERSION_SEMANTIC=1.0.0.0-dev
+if not defined CDP_PACKAGE_VERSION_SEMANTIC set CDP_PACKAGE_VERSION_SEMANTIC=1.3.0.0-dev
 
 if defined TF_BUILD (
     set BuildConfiguration=Release
