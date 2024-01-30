@@ -3,8 +3,8 @@
   <PropertyGroup>
     <Description>ASP.NET Core HTTP server that uses Azure Relay.</Description>
     <Authors>Microsoft</Authors>
-    <copyright>&#169; Microsoft Corporation. All rights reserved.</copyright>
-    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <copyright>© Microsoft Corporation. All rights reserved.</copyright>
+    <TargetFrameworks>net6.0</TargetFrameworks>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -14,25 +14,17 @@
     <PackageIconUrl>https://raw.githubusercontent.com/Azure/azure-relay-dotnet/master/relay.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/Azure/azure-relay-aspnetserver</PackageProjectUrl>
     <IsPackable>True</IsPackable>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.0.0" />
-    <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.1' ">
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Core" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.1.1" />
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="4.10.0" />
-    <PackageReference Include="Microsoft.Azure.Relay" Version="$(MicrosoftAzureRelayPackageVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" />
+    <PackageReference Include="Microsoft.Azure.Relay" />
   </ItemGroup>
 
 </Project>

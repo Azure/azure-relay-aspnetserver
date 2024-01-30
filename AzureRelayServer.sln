@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29503.13
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34511.98
 MinimumVisualStudioVersion = 15.0.26730.03
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{99D5E5F3-88F5-4CCF-8D8C-717C8925DF09}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,13 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{3A1E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E9B546C-17AC-4BDF-BCB3-5955D4755ED8}"
 	ProjectSection(SolutionItems) = preProject
-		.appveyor.yml = .appveyor.yml
 		.gitignore = .gitignore
-		.travis.yml = .travis.yml
 		build.cmd = build.cmd
 		build.sh = build.sh
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
 		NuGet.config = NuGet.config
 		README.md = README.md
 	EndProjectSection
@@ -32,12 +31,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.Relay.AspNetCore.FunctionalTests", "test\Microsoft.Azure.Relay.AspNetCore.FunctionalTests\Microsoft.Azure.Relay.AspNetCore.FunctionalTests.csproj", "{4492FF4C-9032-411D-853F-46B01755E504}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Azure.Relay.AspNetCore", "src\Microsoft.Azure.Relay.AspNetCore\Microsoft.Azure.Relay.AspNetCore.csproj", "{B9F45F9D-D206-47F0-8E5F-54CE2F0BDF92}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{85914BA9-4168-48C5-9C3F-E2E8B1479A6E}"
-	ProjectSection(SolutionItems) = preProject
-		build\dependencies.props = build\dependencies.props
-		build\Key.snk = build\Key.snk
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVCServerApp", "samples\MVCServerApp\MVCServerApp.csproj", "{E9ED2DA2-BFAF-4ABF-B045-63B787CA6CCE}"
 EndProject
@@ -101,7 +94,6 @@ Global
 		{1236F93A-AC5C-4A77-9477-C88F040151CA} = {3A1E31E3-2794-4CA3-B8E2-253E96BDE514}
 		{4492FF4C-9032-411D-853F-46B01755E504} = {E183C826-1360-4DFF-9994-F33CED5C8525}
 		{B9F45F9D-D206-47F0-8E5F-54CE2F0BDF92} = {99D5E5F3-88F5-4CCF-8D8C-717C8925DF09}
-		{85914BA9-4168-48C5-9C3F-E2E8B1479A6E} = {5E9B546C-17AC-4BDF-BCB3-5955D4755ED8}
 		{E9ED2DA2-BFAF-4ABF-B045-63B787CA6CCE} = {3A1E31E3-2794-4CA3-B8E2-253E96BDE514}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

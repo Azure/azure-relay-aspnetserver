@@ -42,7 +42,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     return httpContext.Response.WriteAsync(ex.ToString());
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     return httpContext.Response.WriteAsync(ex.ToString());
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 httpContext.Response.OnStarting(_ =>
                 {
                     callbackCalled = true;
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, null);
                 httpContext.Response.Headers["Upgrade"] = "websocket"; // Win8.1 blocks anything but WebSockets
                 var opaqueFeature = httpContext.Features.Get<IHttpUpgradeFeature>();

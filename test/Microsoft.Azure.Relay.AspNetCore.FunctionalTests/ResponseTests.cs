@@ -30,7 +30,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             {
                 Assert.Equal(200, httpContext.Response.StatusCode);
                 Assert.False(httpContext.Response.HasStarted);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -49,7 +49,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             {
                 httpContext.Response.StatusCode = 201;
                 // TODO: httpContext["owin.ResponseProtocol"] = "HTTP/1.0"; // Http.Sys ignores this value
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -69,7 +69,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 httpContext.Response.StatusCode = 201;
                 httpContext.Features.Get<IHttpResponseFeature>().ReasonPhrase = "CustomReasonPhrase"; // TODO?
                 // TODO: httpContext["owin.ResponseProtocol"] = "HTTP/1.0"; // Http.Sys ignores this value
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -88,7 +88,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
                 httpContext.Response.StatusCode = 901;
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -111,15 +111,15 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     Assert.Same(state, httpContext);
                     onStartingCalled.Set();
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
                 httpContext.Response.OnCompleted(state =>
                 {
                     Assert.Same(state, httpContext);
                     onCompletedCalled.Set();
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address);
@@ -148,9 +148,9 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     Assert.Same(state, httpContext);
                     onCompletedCalled.Set();
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address);
@@ -179,10 +179,10 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     Assert.Same(state, httpContext);
                     onCompletedCalled.Set();
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
                 Assert.Throws<InvalidTimeZoneException>(() => httpContext.Response.Body.Write(new byte[10], 0, 10));
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address);

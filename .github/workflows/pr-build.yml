@@ -6,18 +6,10 @@ jobs:
   build-windows:
     name: Build 'azure-relay-aspnetserver' on windows-latest
 
-    runs-on: 'windows-2019'
+    runs-on: 'windows-latest'
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup .NET Core 2.2
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '2.2.x'
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
+    - uses: actions/checkout@v4
     - run: dotnet --info
     - name: Restore
       run: .\restore.cmd
@@ -34,15 +26,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Setup .NET Core 2.2
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '2.2.x'
-    - name: Setup .NET Core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
+    - uses: actions/checkout@v4
     - run: dotnet --info
     - name: Restore
       run: ./restore.sh

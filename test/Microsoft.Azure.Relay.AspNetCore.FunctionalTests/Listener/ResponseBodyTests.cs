@@ -133,15 +133,6 @@ namespace Microsoft.Azure.Relay.AspNetCore.Listener
                 var context = await server.AcceptAsync(Utilities.DefaultTimeout);
                 context.Response.Headers["Content-lenGth"] = " 20 ";
                 context.Dispose();
-#if NET461
-                // HttpClient retries the request because it didn't get a response.
-                context = await server.AcceptAsync(Utilities.DefaultTimeout);
-                context.Response.Headers["Content-lenGth"] = " 20 ";
-                context.Dispose();
-#elif NETCOREAPP2_0 || NETCOREAPP2_1
-#else
-#error Target framework needs to be updated
-#endif
                 await Assert.ThrowsAsync<HttpRequestException>(() => responseTask);
             }
         }
