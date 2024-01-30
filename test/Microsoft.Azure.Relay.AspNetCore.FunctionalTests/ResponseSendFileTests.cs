@@ -51,7 +51,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     Assert.Equal("Overlapped", support.Get<string>("sendfile.Concurrency"));
                     */
 
+#if NET6_0_OR_GREATER
                     var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
+#else
+                    var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
+#endif                    
                     Assert.NotNull(sendFile);
                 }
                 catch (Exception ex)
