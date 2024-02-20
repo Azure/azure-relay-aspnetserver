@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
                 {
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }))
             {
                 string response = await SendRequestAsync(address);
@@ -179,7 +179,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     tcs.Task.Wait();
                 }
 
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 List<Task> requestTasks = new List<Task>();
@@ -242,7 +242,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.True(aborted.WaitOne(interval), "Aborted");
                 Assert.True(ct.WaitHandle.WaitOne(interval), "CT Wait");
                 Assert.True(ct.IsCancellationRequested, "IsCancellationRequested");
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 // Note: System.Net.Sockets does not RST the connection by default, it just FINs.
@@ -278,7 +278,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 httpContext.Abort();
                 Assert.True(canceled.WaitOne(interval), "Aborted");
                 Assert.True(ct.IsCancellationRequested, "IsCancellationRequested");
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 using (var client = await SendHungRequestAsync("GET", address))

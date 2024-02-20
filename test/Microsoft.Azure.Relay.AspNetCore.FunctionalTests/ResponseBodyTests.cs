@@ -126,7 +126,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
                 httpContext.Response.Headers["Content-lenGth"] = " 20 ";
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 await Assert.ThrowsAsync<HttpRequestException>(() => SendRequestAsync(address));
@@ -187,7 +187,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     appThrew = true;
                 }
                 waitHandle.Set();
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 // The full response is received.
@@ -218,10 +218,10 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     onStartingCalled = true;
                     Assert.Same(state, httpContext);
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
                 httpContext.Response.Body.Write(new byte[10], 0, 10);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address);
@@ -246,10 +246,10 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     onStartingCalled = true;
                     Assert.Same(state, httpContext);
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
                 httpContext.Response.Body.EndWrite(httpContext.Response.Body.BeginWrite(new byte[10], 0, 10, null, null));
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address);
@@ -274,7 +274,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     onStartingCalled = true;
                     Assert.Same(state, httpContext);
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
                 return httpContext.Response.Body.WriteAsync(new byte[10], 0, 10);
             }))

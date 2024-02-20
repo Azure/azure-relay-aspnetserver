@@ -1,10 +1,7 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 
 namespace Microsoft.Azure.Relay.AspNetCore
 {
@@ -15,23 +12,21 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string filename = "Properties\\launchSettings.json";
             if (File.Exists(filename))
             {
-                using (var file = File.OpenText(filename))
+                using (var file = File.Open(filename, FileMode.Open))
                 {
-                    var reader = new JsonTextReader(file);
-                    var jObject = JObject.Load(reader);
+                    var json = JsonDocument.Parse(file).RootElement;
 
-                    var variables = jObject
-                        .GetValue("profiles")
+                    var variables = json.
+                        GetProperty("profiles").EnumerateObject()
                         //select a proper profile here
-                        .SelectMany(profiles => profiles.Children())
-                        .SelectMany(profile => profile.Children<JProperty>())
+                        .SelectMany(profile => profile.Value.EnumerateObject())
                         .Where(prop => prop.Name == "environmentVariables")
-                        .SelectMany(prop => prop.Value.Children<JProperty>())
+                        .SelectMany(prop => prop.Value.EnumerateObject())
                         .ToList();
 
                     foreach (var variable in variables)
                     {
-                        Environment.SetEnvironmentVariable(variable.Name, variable.Value.ToString());
+                        Environment.SetEnvironmentVariable(variable.Name, variable.Value.GetString());
                     }
                 }
             }

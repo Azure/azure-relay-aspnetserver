@@ -31,7 +31,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -54,7 +54,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 var responseInfo = httpContext.Features.Get<IHttpResponseFeature>();
                 var responseHeaders = responseInfo.Headers;
                 responseHeaders["WWW-Authenticate"] = new string[] { "custom1" };
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 // HttpClient would merge the headers no matter what
@@ -78,7 +78,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 var responseInfo = httpContext.Features.Get<IHttpResponseFeature>();
                 var responseHeaders = responseInfo.Headers;
                 responseHeaders["WWW-Authenticate"] = new string[] { "custom1, and custom2", "custom3" };
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 // HttpClient would merge the headers no matter what
@@ -89,13 +89,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal(0, response.ContentLength);
                 Assert.NotNull(response.Headers["Date"]);
                 Assert.Equal("Microsoft-HTTPAPI/2.0", response.Headers["Server"]);
-#if NETCOREAPP2_0 || NETCOREAPP2_1 // WebHeaderCollection.GetValues() not available in CoreCLR.
-                Assert.Equal("custom1, and custom2, custom3", response.Headers["WWW-Authenticate"]);
-#elif NET461
                 Assert.Equal(new string[] { "custom1, and custom2", "custom3" }, response.Headers.GetValues("WWW-Authenticate"));
-#else
-#error Target framework needs to be updated
-#endif
             }
         }
 
@@ -108,7 +102,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 var responseInfo = httpContext.Features.Get<IHttpResponseFeature>();
                 var responseHeaders = responseInfo.Headers;
                 responseHeaders["Custom-Header1"] = new string[] { "custom1, and custom2", "custom3" };
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 // HttpClient would merge the headers no matter what
@@ -119,13 +113,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal(0, response.ContentLength);
                 Assert.NotNull(response.Headers["Date"]);
                 Assert.Equal("Microsoft-HTTPAPI/2.0", response.Headers["Server"]);
-#if NETCOREAPP2_0 || NETCOREAPP2_1 // WebHeaderCollection.GetValues() not available in CoreCLR.
-                Assert.Equal("custom1, and custom2, custom3", response.Headers["Custom-Header1"]);
-#elif NET461
                 Assert.Equal(new string[] { "custom1, and custom2", "custom3" }, response.Headers.GetValues("Custom-Header1"));
-#else
-#error Target framework needs to be updated
-#endif
             }
         }
 
@@ -159,7 +147,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 using (HttpClient client = new HttpClient())
@@ -222,7 +210,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     Assert.True(responseInfo.HasStarted);
                     Assert.Throws<InvalidOperationException>(() => responseInfo.StatusCode = 404);
                     Assert.Throws<InvalidOperationException>(() => responseHeaders.Add("Custom3", new string[] { "value3a, value3b", "value3c" }));
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -275,7 +263,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             {
                 var responseHeaders = httpContext.Response.Headers;
                 responseHeaders.Add(headerName, headerValue);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);

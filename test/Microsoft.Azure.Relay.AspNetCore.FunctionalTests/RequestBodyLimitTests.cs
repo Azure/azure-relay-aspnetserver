@@ -38,7 +38,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 int read = httpContext.Request.Body.Read(input, 0, input.Length);
                 httpContext.Response.ContentLength = read;
                 httpContext.Response.Body.Write(input, 0, read);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World");
@@ -84,7 +84,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 int read = httpContext.Request.Body.EndRead(httpContext.Request.Body.BeginRead(input, 0, input.Length, null, null));
                 httpContext.Response.ContentLength = read;
                 httpContext.Response.Body.EndWrite(httpContext.Response.Body.BeginWrite(input, 0, read, null, null));
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World");
@@ -109,7 +109,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 int read = httpContext.Request.Body.Read(input, 0, input.Length);
                 httpContext.Response.ContentLength = read;
                 httpContext.Response.Body.Write(input, 0, read);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World", chunked: true);
@@ -156,7 +156,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 int read = httpContext.Request.Body.EndRead(httpContext.Request.Body.BeginRead(input, 0, input.Length, null, null));
                 httpContext.Response.ContentLength = read;
                 httpContext.Response.Body.EndWrite(httpContext.Response.Body.BeginWrite(input, 0, read, null, null));
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World", chunked: true);
@@ -183,7 +183,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal("The request's Content-Length 11 is larger than the request body size limit 10.", ex.Message);
                 ex = Assert.Throws<IOException>(() => httpContext.Request.Body.Read(input, 0, input.Length));
                 Assert.Equal("The request's Content-Length 11 is larger than the request body size limit 10.", ex.Message);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World");
@@ -208,7 +208,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal("The request's Content-Length 11 is larger than the request body size limit 10.", ex.Message);
                 ex = Assert.Throws<IOException>(() => { var t = httpContext.Request.Body.ReadAsync(input, 0, input.Length); });
                 Assert.Equal("The request's Content-Length 11 is larger than the request body size limit 10.", ex.Message);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World");
@@ -231,7 +231,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal("The request's Content-Length 11 is larger than the request body size limit 10.", ex.Message);
                 ex = Assert.Throws<IOException>(() => httpContext.Request.Body.BeginRead(input, 0, input.Length, null, null));
                 Assert.Equal("The request's Content-Length 11 is larger than the request body size limit 10.", ex.Message);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World");
@@ -255,7 +255,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal("The total number of bytes read 11 has exceeded the request body size limit 10.", ex.Message);
                 ex = Assert.Throws<IOException>(() => httpContext.Request.Body.Read(input, 0, input.Length));
                 Assert.Equal("The total number of bytes read 11 has exceeded the request body size limit 10.", ex.Message);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World", chunked: true);
@@ -301,7 +301,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Equal("The total number of bytes read 11 has exceeded the request body size limit 10.", ex.Message);
                 ex = Assert.Throws<IOException>(() => body.EndRead(body.BeginRead(input, 0, input.Length, null, null)));
                 Assert.Equal("The total number of bytes read 11 has exceeded the request body size limit 10.", ex.Message);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address, "Hello World", chunked: true);
@@ -329,7 +329,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 content.Block.Release();
                 var ex = Assert.Throws<IOException>(() => httpContext.Request.Body.Read(input, 0, input.Length));
                 Assert.Equal("The total number of bytes read 20 has exceeded the request body size limit 10.", ex.Message);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(address, content, chunked: true);

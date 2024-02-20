@@ -51,11 +51,11 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     Assert.Equal("Overlapped", support.Get<string>("sendfile.Concurrency"));
                     */
 
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                     var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                     var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
-#endif
+#endif                    
                     Assert.NotNull(sendFile);
                 }
                 catch (Exception ex)
@@ -63,7 +63,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     byte[] body = Encoding.UTF8.GetBytes(ex.ToString());
                     httpContext.Response.Body.Write(body, 0, body.Length);
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendRequestAsync(address);
@@ -101,7 +101,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     waitHandle.Set();
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 HttpResponseMessage response = await SendRequestAsync(address);
@@ -119,7 +119,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -142,7 +142,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -165,7 +165,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -188,7 +188,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -212,7 +212,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -236,7 +236,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, async httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -259,7 +259,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, async httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -347,7 +347,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
             string address;
             using (Utilities.CreateHttpServer(out address, httpContext =>
             {
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();
@@ -377,9 +377,9 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 {
                     onStartingCalled = true;
                     Assert.Same(state, httpContext);
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }, httpContext);
-#if !NETCOREAPP2_0 && !NETCOREAPP2_1 && !NET461
+#if NET6_0_OR_GREATER
                 var sendFile = httpContext.Features.Get<IHttpResponseBodyFeature>();
 #else
                 var sendFile = httpContext.Features.Get<IHttpSendFileFeature>();

@@ -72,7 +72,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     byte[] body = Encoding.ASCII.GetBytes(ex.ToString());
                     httpContext.Response.Body.Write(body, 0, body.Length);
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(root + "/basepath/SomePath?SomeQuery");
@@ -138,7 +138,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     byte[] body = Encoding.ASCII.GetBytes(ex.ToString());
                     httpContext.Response.Body.Write(body, 0, body.Length);
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(root + "/basepath/SomePath?SomeQuery");
@@ -203,7 +203,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     byte[] body = Encoding.ASCII.GetBytes(ex.ToString());
                     httpContext.Response.Body.Write(body, 0, body.Length);
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(root + "/basepath/SomePath?SomeQuery=foo");
@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     byte[] body = Encoding.ASCII.GetBytes(ex.ToString());
                     httpContext.Response.Body.Write(body, 0, body.Length);
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(root + requestPath);
@@ -267,7 +267,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 var requestInfo = httpContext.Features.Get<IHttpRequestFeature>();
                 Assert.Equal("/%2F", requestInfo.Path);
                 Assert.Equal("/%252F", requestInfo.RawTarget);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 var response = await SendSocketRequestAsync(root, "/%252F");
@@ -351,7 +351,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     byte[] body = Encoding.ASCII.GetBytes(ex.ToString());
                     httpContext.Response.Body.Write(body, 0, body.Length);
                 }
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(root + requestPath);

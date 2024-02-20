@@ -34,7 +34,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     // Assert.Equal("Keep-Alive", requestHeaders.Get("Connection"));
                     Assert.False(StringValues.IsNullOrEmpty(requestHeaders["Host"]));
                     Assert.True(StringValues.IsNullOrEmpty(requestHeaders["Accept"]));
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }))
             {
                 string response = await SendRequestAsync(address);
@@ -57,7 +57,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                     Assert.Equal("custom1, and custom2, custom3", requestHeaders["Custom-Header"]);
                     Assert.Single(requestHeaders["Spacer-Header"]);
                     Assert.Equal("spacervalue, spacervalue", requestHeaders["Spacer-Header"]);
-                    return Task.FromResult(0);
+                    return Task.CompletedTask;
                 }))
             {
                 string[] customValues = new string[] { "custom1, and custom2", "custom3" };

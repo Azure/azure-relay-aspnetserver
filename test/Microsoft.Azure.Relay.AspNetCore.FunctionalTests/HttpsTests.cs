@@ -28,7 +28,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
         {
             using (Utilities.CreateHttpsServer(httpContext =>
             {
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(Address);
@@ -61,7 +61,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 byte[] body = Encoding.UTF8.GetBytes("Hello World");
                 httpContext.Response.ContentLength = body.Length;
                 httpContext.Response.Body.Write(body, 0, body.Length);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(Address, "Hello World");
@@ -108,28 +108,34 @@ namespace Microsoft.Azure.Relay.AspNetCore
         private async Task<string> SendRequestAsync(string uri, 
             X509Certificate cert = null)
         {
-            var handler = new WinHttpHandler();
-            handler.ServerCertificateValidationCallback = (a, b, c, d) => true;
+            var handler = new HttpClientHandler
+            {
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
+            };
+
             if (cert != null)
             {
                 handler.ClientCertificates.Add(cert);
             }
-            using (HttpClient client = new HttpClient(handler))
-            {
-                return await client.GetStringAsync(uri);
-            }
+
+            using HttpClient client = new HttpClient(handler);
+            return await client.GetStringAsync(uri);
         }
 
         private async Task<string> SendRequestAsync(string uri, string upload)
         {
-            var handler = new WinHttpHandler();
-            handler.ServerCertificateValidationCallback = (a, b, c, d) => true;
-            using (HttpClient client = new HttpClient(handler))
+            var handler = new HttpClientHandler
             {
-                HttpResponseMessage response = await client.PostAsync(uri, new StringContent(upload));
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
-            }
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => true
+            };
+
+            using HttpClient client = new HttpClient(handler);
+
+            HttpResponseMessage response = await client.PostAsync(uri, new StringContent(upload));
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
         }
 
         private X509Certificate2 FindClientCert()

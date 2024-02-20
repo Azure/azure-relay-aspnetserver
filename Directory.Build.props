@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Versions">
-    <MicrosoftAzureRelayPackageVersion>2.0.1</MicrosoftAzureRelayPackageVersion>
+    <MicrosoftAzureRelayPackageVersion>3.0.1</MicrosoftAzureRelayPackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Label="Version">

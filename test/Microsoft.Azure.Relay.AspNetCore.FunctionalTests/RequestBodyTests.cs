@@ -35,7 +35,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 int read = httpContext.Request.Body.Read(input, 0, input.Length);
                 httpContext.Response.ContentLength = read;
                 httpContext.Response.Body.Write(input, 0, read);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(address, "Hello World");
@@ -70,7 +70,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 int read = httpContext.Request.Body.EndRead(httpContext.Request.Body.BeginRead(input, 0, input.Length, null, null));
                 httpContext.Response.ContentLength = read;
                 httpContext.Response.Body.EndWrite(httpContext.Response.Body.BeginWrite(input, 0, read, null, null));
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(address, "Hello World");
@@ -93,7 +93,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 Assert.Throws<ArgumentOutOfRangeException>("size", () => httpContext.Request.Body.Read(input, 0, 0));
                 Assert.Throws<ArgumentOutOfRangeException>("size", () => httpContext.Request.Body.Read(input, 1, input.Length));
                 Assert.Throws<ArgumentOutOfRangeException>("size", () => httpContext.Request.Body.Read(input, 0, input.Length + 1));
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(address, "Hello World");
@@ -116,7 +116,7 @@ namespace Microsoft.Azure.Relay.AspNetCore
                 content.Block.Release();
                 read = httpContext.Request.Body.Read(input, 0, input.Length);
                 Assert.Equal(5, read);
-                return Task.FromResult(0);
+                return Task.CompletedTask;
             }))
             {
                 string response = await SendRequestAsync(address, content);
